@@ -172,6 +172,7 @@ public class PlayerController : MonoBehaviour
         {
             Loot loot = go.GetComponent<Loot>();
             loot.Collected();
+            SoundManager.PlayRandomSoundFromType(SoundType.Gather, 0.4f);
         }
     }
 

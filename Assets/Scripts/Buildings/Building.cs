@@ -77,6 +77,14 @@ public class Building : MonoBehaviour
         color.g = color.g + 0.10f;
         color.b = color.b + 0.10f;
         spriteRenderer.color = color;
+        if (scaffolding.bConstructionEnded)
+        {
+            EndBuild();
+        }
+        else
+        {
+            SoundManager.PlayRandomSoundFromType(SoundType.BuildStep, 1f);
+        }
 
     }
     private void EndBuild()
@@ -89,6 +97,7 @@ public class Building : MonoBehaviour
         color.g = 1f;
         color.b = 1f;
         spriteRenderer.color = color;
+        SoundManager.PlayRandomSoundFromType(SoundType.BuildOver, 1f);
     }
 
 
@@ -118,10 +127,7 @@ public class Building : MonoBehaviour
                     //Play Construction step animation
                     scaffolding.StepByStep(); //scaffolding part
                     BuildIterative(); // transparcy part
-                    if (scaffolding.bConstructionEnded)
-                    {
-                        EndBuild();
-                    }
+
                     return true;
                 }
                 else
@@ -139,10 +145,6 @@ public class Building : MonoBehaviour
             }
         }
 
-        if (canvas.Count == 0)
-        {
-            EndBuild(); // fail safe
-        }
         return false;
     }
 
