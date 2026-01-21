@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 
 public class Building : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class Building : MonoBehaviour
     private Scaffolding scaffolding;
     public bool bBuilt = false;
 
+    public GameObject leftAttackPoint;
+    public GameObject rightAttackPoint;
   
     [Header("Ressources")]
 
@@ -41,15 +44,6 @@ public class Building : MonoBehaviour
         }
 
         spriteRenderer = GetComponent<SpriteRenderer>();
-        if (!bBuilt)
-        {
-            Color color = spriteRenderer.color;
-            color.a = startAlpha;
-            color.r =  startIntensity;
-            color.g =  startIntensity;
-            color.b =  startIntensity;
-            spriteRenderer.color = color;
-        }
 
         canvas = new List<GameObject>
         {
@@ -57,13 +51,31 @@ public class Building : MonoBehaviour
             woodCanva,
             stoneCanva
         };
-
-        //Make the Start value match in UI
         foreach (GameObject go in canvas)
         {
             UpdateCanva(go);
         }
+        if (!bBuilt)
+        {
+            Color color = spriteRenderer.color;
+            color.a = startAlpha;
+            color.r = startIntensity;
+            color.g = startIntensity;
+            color.b = startIntensity;
+            spriteRenderer.color = color;
+        }
+        else
+        {
+            EndBuild();
+            foreach (GameObject go in canvas)
+            {
+                go.SetActive(false);
+            }
+        }
+        //Make the Start value match in UI
 
+
+        
     }
 
     private void BuildIterative()
@@ -98,6 +110,7 @@ public class Building : MonoBehaviour
         color.b = 1f;
         spriteRenderer.color = color;
         SoundManager.PlayRandomSoundFromType(SoundType.BuildOver, 1f);
+        StaticClass.Instance.listOfBuiltBuilding.Add(gameObject);
     }
 
 

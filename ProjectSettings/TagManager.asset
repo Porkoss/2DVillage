@@ -8,6 +8,8 @@ TagManager:
   - Collectable
   - Loot
   - Building
+  - Ally
+  - Enemy
   layers:
   - Default
   - TransparentFX

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5810427120113868625}
   - component: {fileID: 2528208946759292844}
   - component: {fileID: 1070680494671590000}
+  - component: {fileID: 8427104179425373751}
   m_Layer: 0
   m_Name: Church
   m_TagString: Building
@@ -112,6 +113,8 @@ MonoBehaviour:
   startIntensity: 0.8
   scaffoldingPrefab: {fileID: 3984859071870981649}
   bBuilt: 0
+  leftAttackPoint: {fileID: 0}
+  rightAttackPoint: {fileID: 0}
   goldCanva: {fileID: 6640813461183849226}
   woodCanva: {fileID: 4328765986083703029}
   stoneCanva: {fileID: 2258494686533065480}
@@ -188,6 +191,22 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 2.53125, y: 2.5}
   m_EdgeRadius: 0
+--- !u!208 &8427104179425373751
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8496984399186697651}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1.266, y: 1.25, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1001 &2322704221157631527
 PrefabInstance:
   m_ObjectHideFlags: 0

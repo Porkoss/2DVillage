@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class StaticClass: MonoBehaviour
@@ -10,6 +12,8 @@ public class StaticClass: MonoBehaviour
     public Inventory inventory;
 
     public UiHandler uiHandler;
+
+    public List<GameObject> listOfBuiltBuilding;
 
     
 
