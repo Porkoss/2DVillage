@@ -4,7 +4,7 @@ using TMPro;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
-
+[RequireComponent(typeof(Health))]
 public class Building : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -33,6 +33,8 @@ public class Building : MonoBehaviour
     private Animator playerAnimator;
 
     private Inventory inventory;
+
+    public Health health;
 
     void Start()
     {
@@ -74,7 +76,7 @@ public class Building : MonoBehaviour
         }
         //Make the Start value match in UI
 
-
+        health =GetComponent<Health>();
         
     }
 

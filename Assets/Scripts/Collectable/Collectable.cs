@@ -16,6 +16,7 @@ public class Collectable : MonoBehaviour
     public float MaxHealth = 2f;
     public float RegenTimer = 3f;
     protected float runningRegenTimer = 0f;
+    //TO DO : rework code with health component
 
     protected PlayerController controller;
     protected Animator playerAnimator;

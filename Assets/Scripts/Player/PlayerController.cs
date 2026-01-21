@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Health))]
 public class PlayerController : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -27,12 +28,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject ErrorPrefab;
     private float currentTimerError=0f;
     private bool bErrorShowing = false;
-   
+
+    [Header("Victim")]
+    [SerializeField] GameObject leftAttackPoint;
+    [SerializeField] GameObject righAttackPoint;
+    Health health;
+    
     void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        
+        health = GetComponent<Health>();
     }
 
     // Update is called once per frame
