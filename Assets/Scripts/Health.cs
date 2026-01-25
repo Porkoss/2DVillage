@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class Health: MonoBehaviour
 {
-	[SerializeField] float currentHealth;
-	[SerializeField] float maxHealth;
+	[SerializeField] protected float currentHealth;
+	[SerializeField] protected float maxHealth;
 	//TO DO : herites this class in order to adapt to entities ?
-    void Death()
+    public virtual void Death()
 	{
 		Debug.Log(gameObject.name + " is dead"); //TO DO : update this code if necessary
-		//Destroy(gameObject);
+		Destroy(gameObject);
 	}
-	public bool TakingDamage(float damage)
+	public virtual bool TakingDamage(float damage)
 	{
 		Debug.Log(gameObject.name + " is taking " + damage);
 		currentHealth -= damage;
@@ -20,5 +20,23 @@ public class Health: MonoBehaviour
 			return true;
 		}
 		return false;
+	}
+
+	public virtual bool HealingDamage(float damageHealed)
+	{
+		if (currentHealth >= maxHealth)
+		{
+			return false;
+		}
+		else
+		{
+			currentHealth += damageHealed;
+			return true;
+		}
+	}
+
+	public virtual void Reset()
+	{
+		currentHealth = maxHealth;
 	}
 }

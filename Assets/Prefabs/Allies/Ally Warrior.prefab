@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1988228767631745335}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.93, y: -2.01, z: 0}
+  m_LocalPosition: {x: 1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -161,7 +161,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7077817926532750211
 Transform:
   m_ObjectHideFlags: 0
@@ -247,7 +247,8 @@ GameObject:
   - component: {fileID: 399929096470619021}
   - component: {fileID: 1596053196475838382}
   - component: {fileID: 8395981928216373493}
-  m_Layer: 0
+  - component: {fileID: 5346206330596495499}
+  m_Layer: 6
   m_Name: Ally Warrior
   m_TagString: Ally
   m_Icon: {fileID: 0}
@@ -309,6 +310,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Health
   currentHealth: 10
   maxHealth: 10
+--- !u!114 &5346206330596495499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8251394103117465408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1034a2e61aa8fc46825b1373d4e3831, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AllyAI
+  DetectionRange: 20
+  DetectionTimer: 0.3
+  AttackRange: 1.2
+  leftAttackPoint: {fileID: 1988228767631745335}
+  rightAttackPoint: {fileID: 8605300231786403875}
+  AttackTimer: 1
+  damage: 1
+  bIsInCombat: 0
+  currentTarget: {fileID: 0}
+  bHasOpponent: 0
+  health: {fileID: 0}
+  chosenAttackPoint: {fileID: 0}
 --- !u!1 &8605300231786403875
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,7 +359,7 @@ Transform:
   m_GameObject: {fileID: 8605300231786403875}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.54, y: -2.01, z: 0}
+  m_LocalPosition: {x: -1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
