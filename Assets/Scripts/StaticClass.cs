@@ -15,7 +15,7 @@ public class StaticClass: MonoBehaviour
 
     public List<GameObject> listOfBuiltBuilding;
 
-    
+    public GameObject GameOverMenu;
 
     private void Awake()
     {

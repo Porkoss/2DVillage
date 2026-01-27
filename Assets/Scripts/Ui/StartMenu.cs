@@ -11,6 +11,8 @@ public class StartMenu : MonoBehaviour
     public void StartGame()
     {
         Debug.Log("Starting Game");
-        SceneManager.LoadScene("MainScene");
+        Time.timeScale = 1.0f;
+        SceneManager.LoadScene("TestScene");//TO DO UPDATE THIS
+        
     }
 }

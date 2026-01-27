@@ -9,13 +9,14 @@ public class Health: MonoBehaviour
 	{
 		Debug.Log(gameObject.name + " is dead"); //TO DO : update this code if necessary
 		Destroy(gameObject);
+		//TO DO : add death sound / animation
 	}
 	public virtual bool TakingDamage(float damage)
 	{
 		Debug.Log(gameObject.name + " is taking " + damage);
 		currentHealth -= damage;
 		if (currentHealth <= 0)
-		{
+		{	
 			Death();
 			return true;
 		}

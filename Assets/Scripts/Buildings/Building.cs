@@ -245,7 +245,7 @@ public class Building : MonoBehaviour
         }
     }
 
-
+    //call when wave is over;
     public void RestoreArmy()
     {
         //TO DO MAYBE do this better 
@@ -272,8 +272,12 @@ public class Building : MonoBehaviour
     {
         if(destructionStep < fireVFX.Count)
         {
-            fireVFX[destructionStep].SetActive(false);
             destructionStep++;
+            fireVFX[destructionStep].SetActive(false);
+        }
+        if(destructionStep == 2)
+        {
+            ResetToRebuild();
         }
     }
 
@@ -293,6 +297,7 @@ public class Building : MonoBehaviour
         }
         destructionStep = 2;
         health.Reset();
+        bBuilt = false;
     }
 
 

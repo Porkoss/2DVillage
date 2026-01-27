@@ -87,5 +87,6 @@ public class Scaffolding : MonoBehaviour
         bLadder = true;
         DownStructure.SetActive(true);
         bDownStructure = true;
+        bConstructionEnded = false;
     }
 }

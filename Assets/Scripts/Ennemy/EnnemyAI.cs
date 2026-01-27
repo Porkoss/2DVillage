@@ -1,8 +1,11 @@
 using System.Collections.Generic;
+using System.Net.Mail;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 [RequireComponent(typeof(Health))]
 public class EnnemyAI : MonoBehaviour
@@ -118,8 +121,32 @@ public class EnnemyAI : MonoBehaviour
 
     void AttackPlayer()
     {
-        PlayerController playerController= currentTarget.GetComponent<PlayerController>();
-        //SettingUpForAttack(playerController.leftAttackPoint.transform.position,playerController.rightAttackPoint.transform.position);
+        if (currentAttackTimer >= AttackTimer)
+        {
+            animator.SetTrigger("Attack1");
+            //TO DO : move this into an animation controller to make it more realistic
+            Vector2 position2D = new Vector2(transform.position.x, transform.position.y);
+            Vector2 right = new Vector2(transform.right.x, transform.right.y);
+
+            RaycastHit2D[] hits = Physics2D.CircleCastAll(position2D + right * 0.2f, 0.3f, right, 0.5f);
+            Debug.DrawLine(position2D + right * 0.2f, position2D + right * 0.85f, Color.red, 1f);
+
+            foreach (RaycastHit2D hit in hits)
+            {
+
+                if (hit.collider.gameObject.CompareTag("Player"))
+                {
+                    hit.collider.gameObject.GetComponent<Health>().TakingDamage(damage);
+                }
+            }
+        }
+        else
+        {
+
+            currentAttackTimer += Time.deltaTime;
+        }
+
+        
     }
 
     void AttackBuilding()
