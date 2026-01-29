@@ -1,3 +1,4 @@
+using Mono.Cecil.Cil;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
@@ -18,6 +19,7 @@ public class AllyAI : MonoBehaviour
 
     [Header("Combat")]
     [SerializeField] float AttackRange = 1.2f;
+    
     [SerializeField] public GameObject leftAttackPoint;
     [SerializeField] public GameObject rightAttackPoint;
     float currentAttackTimer=0f;
@@ -39,6 +41,7 @@ public class AllyAI : MonoBehaviour
         health = GetComponent<Health>(); 
         defaultPosition = Utilities.To2DVector(transform.position);
         currentTarget = gameObject;
+
     }
 
     // Update is called once per frame
@@ -67,16 +70,15 @@ public class AllyAI : MonoBehaviour
                 }
             }
             currentDetectionTimer += Time.deltaTime;
-            if(bHasOpponent && Utilities.Distance2D(transform.position, currentTarget.transform.position)<=AttackRange)
+            if(bHasOpponent && currentDetectionTimer >=DetectionTimer)
             {
-
+                currentDetectionTimer = 0f;
                 EngagingOpponent();// check if close enough to enter combat mode here cannot go out of combat mode outside of winning combat
             }
             
 
         }
         //if close enough and in combat => attacks
-      
         else
         {
             Attacking();//deal damage to ennemy and if ennemy is killed, go out of combat mode
@@ -84,6 +86,7 @@ public class AllyAI : MonoBehaviour
         Vector3 vector = currentTarget.transform.position - transform.position;
 
         animator.transform.localScale = new Vector3(Mathf.Sign(vector.x), 1, 1);
+
     }
 
 
@@ -129,7 +132,39 @@ public class AllyAI : MonoBehaviour
     {
         
         GameObject leftAttackPoint = currentTarget.GetComponent<EnnemyAI>().leftAttackPoint;
+        NavMeshPath navMeshPath = new NavMeshPath();
+
         GameObject rightAttackPoint = currentTarget.GetComponent<EnnemyAI>().rightAttackPoint;
+        //checking first is the attack point is reachable.
+        if (!CheckIfReachable(rightAttackPoint) )
+        {
+            if (CheckIfReachable(leftAttackPoint))
+            {
+                agent.stoppingDistance = 0;
+                Vector3 destination = new Vector3(leftAttackPoint.transform.position.x, leftAttackPoint.transform.position.y, transform.position.z);
+                agent.SetDestination(destination);
+                transform.forward = new Vector3(0, -1, 0);
+                animator.transform.localScale = new Vector3(1, 1, 1);
+                chosenAttackPoint = leftAttackPoint;
+            }
+            else
+            {
+                chosenAttackPoint = currentTarget;
+            }
+        }
+        if (!CheckIfReachable(leftAttackPoint))
+        {
+            if (CheckIfReachable(rightAttackPoint))
+            {
+                agent.stoppingDistance = 0;
+                Vector3 destination = new Vector3(rightAttackPoint.transform.position.x, leftAttackPoint.transform.position.y, transform.position.z);
+                agent.SetDestination(destination);
+                animator.transform.localScale = new Vector3(-1, 1, 1);
+                chosenAttackPoint = rightAttackPoint;
+            }
+        }
+
+        
         if (Utilities.Distance2D(transform.position, currentTarget.transform.position) <= AttackRange && !bIsInCombat)
         {
             Debug.Log("EngagingOponent)");
@@ -158,12 +193,31 @@ public class AllyAI : MonoBehaviour
         }
     }
 
+    private bool CheckIfReachable(GameObject attackPoint)
+    {
+        int mask = LayerMask.GetMask("Default");
+        Vector3 attackPointProjected = new Vector3(attackPoint.transform.position.x, attackPoint.transform.position.y, 0);
+        Collider[] hits = Physics.OverlapSphere(attackPointProjected,0.2f,mask,QueryTriggerInteraction.Collide);
+        
+        foreach (Collider hit in hits)
+        {
+            //Debug.Log(hit.gameObject.transform.parent.gameObject.name);
+            if (hit.gameObject.CompareTag("Building"));
+            {
+                
+                return false;
+            }
+        }
+        return true;
+    }
+
     private void Attacking()
     {
         try
         {
-
-            if (Utilities.Distance2D(chosenAttackPoint.transform.position, transform.position) <= 0.1f)
+            //Debug.Log("trying to attack at distance " + (Utilities.Distance2D(chosenAttackPoint.transform.position, transform.position) <= 0.2f));
+            //TO DO : keep that in check ( maybe change logic when once in place => just attack)
+            if (Utilities.Distance2D(chosenAttackPoint.transform.position, transform.position) <= 0.2f)
             {
 
                 EnnemyAI ennemyAI = currentTarget.GetComponent<EnnemyAI>();
