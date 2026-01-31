@@ -7,11 +7,17 @@ public class UiHandler : MonoBehaviour
     [SerializeField] TextMeshProUGUI goldText;
     [SerializeField] TextMeshProUGUI woodText;
     [SerializeField] TextMeshProUGUI stoneText;
+
+    [SerializeField] TextMeshProUGUI waveCounterText;
+    [SerializeField] TextMeshProUGUI timeUntilNextWaveText;
     // Update is called once per frame
     void Update()
     {
         goldText.SetText(": " + StaticClass.Instance.inventory.gold);
         woodText.SetText(": " + StaticClass.Instance.inventory.wood);
         stoneText.SetText(": " + StaticClass.Instance.inventory.stone);
+
+        waveCounterText.SetText("Wave : "+StaticClass.Instance.GameHandler.GetWaveNumber().ToString());
+        timeUntilNextWaveText.SetText("Time until newt wave :"+StaticClass.Instance.GameHandler.GetTimer().ToString());
     }
 }

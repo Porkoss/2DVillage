@@ -10,6 +10,7 @@ TagManager:
   - Building
   - Ally
   - Enemy
+  - Spawner
   layers:
   - Default
   - TransparentFX

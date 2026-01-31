@@ -17,6 +17,8 @@ public class StaticClass: MonoBehaviour
 
     public GameObject GameOverMenu;
 
+    public GameHandler GameHandler;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
