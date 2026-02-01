@@ -4,6 +4,9 @@ public class Health: MonoBehaviour
 {
 	[SerializeField] protected float currentHealth;
 	[SerializeField] protected float maxHealth;
+
+	[SerializeField] protected float regenTimer = 10f;
+	 protected float runningRegenTimer = 0f;
 	//TO DO : herites this class in order to adapt to entities ?
     public virtual void Death()
 	{
@@ -15,6 +18,7 @@ public class Health: MonoBehaviour
 	{
 		Debug.Log(gameObject.name + " is taking " + damage);
 		currentHealth -= damage;
+		runningRegenTimer = 0;
 		if (currentHealth <= 0)
 		{	
 			Death();
@@ -40,4 +44,25 @@ public class Health: MonoBehaviour
 	{
 		currentHealth = maxHealth;
 	}
+
+	public float GetHealthPercent()
+	{
+		return currentHealth/maxHealth;
+	}
+	//TO DO: don't forget to remove this from other place in the game 
+	public void passiveRegen()
+    {
+        if (runningRegenTimer > regenTimer)
+        {
+            runningRegenTimer = 0;
+            currentHealth = maxHealth;
+        }
+        runningRegenTimer += Time.deltaTime;
+
+    }
+
+    public void Update()
+    {
+		passiveRegen();
+    }
 }

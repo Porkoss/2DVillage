@@ -6838,7 +6838,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -192}
+  m_AnchoredPosition: {x: 0, y: -72}
   m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &771946020
@@ -6861,7 +6861,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "ZQSD : movement \nLeft click : collect\nE : interact"
+  m_text: "Collect, construct\nBefore the ennemy arrives\n\nZQSD : movement \nLeft
+    click : collect\nE : interact"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3211ceec38577904f93d878fa1bf6305, type: 2}
   m_sharedMaterial: {fileID: 8797232524103234700, guid: 3211ceec38577904f93d878fa1bf6305, type: 2}
@@ -28300,7 +28301,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4621427344731381540}
   m_Layer: 5
-  m_Name: Start
+  m_Name: First Row
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32459,7 +32460,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -53}
+  m_AnchoredPosition: {x: 0, y: 48}
   m_SizeDelta: {x: 250, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8269247167076563915
@@ -32847,7 +32848,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 97}
+  m_AnchoredPosition: {x: 0, y: 175}
   m_SizeDelta: {x: 250, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8842575946469691277

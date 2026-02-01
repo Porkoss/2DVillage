@@ -40,6 +40,10 @@ public class GameHandler : MonoBehaviour
         {
             ennemySpawners[i].spawnNumber = waveCounter;
             ennemySpawners[i].SpawnEnnemy();
+            foreach (var building in StaticClass.Instance.listOfBuiltBuilding)
+            {
+                building.GetComponent<Building>().RestoreArmy();
+            }
             
         }
         
@@ -54,5 +58,7 @@ public class GameHandler : MonoBehaviour
     {
         return waveCounter;
     }
+
+    
 
 }

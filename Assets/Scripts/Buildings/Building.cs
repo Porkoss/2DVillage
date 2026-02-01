@@ -86,6 +86,8 @@ public class Building : MonoBehaviour
         
     }
 
+
+
     private void AlphaStartState()
     {
         Color color = spriteRenderer.color;
@@ -239,8 +241,6 @@ public class Building : MonoBehaviour
         ArmyScale = spawnPoints.Count;
         for (int i = 0; i < ArmyScale; i++)
         {
-
-
             towerArmy.Add(Instantiate(soldierPrefab, spawnPoints[i].transform.position, Quaternion.identity));
         }
     }
@@ -249,13 +249,21 @@ public class Building : MonoBehaviour
     public void RestoreArmy()
     {
         //TO DO MAYBE do this better 
+        
         foreach (GameObject army in towerArmy)
         {
-            Destroy(army);
+            if(army != null)
+            {
+                Destroy(army);
+            }
+            
         }
         GenerateArmy();
     }
     #endregion Army
+
+
+    
 
     #region Destruction
 

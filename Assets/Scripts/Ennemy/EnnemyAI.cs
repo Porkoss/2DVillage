@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
+
 
 [RequireComponent(typeof(Health))]
 public class EnnemyAI : MonoBehaviour
@@ -213,7 +213,8 @@ public class EnnemyAI : MonoBehaviour
         bDestroyingBuilding = false;
         bIsInCombat = true;
         currentTarget = attacker.gameObject;
-        
+        agent.isStopped = true;
+
     }
 
     private void AttackingAlly()
@@ -231,6 +232,7 @@ public class EnnemyAI : MonoBehaviour
                 if (bTargetDestroyed)
                 {
                     bIsInCombat = false;
+                    agent.isStopped = false;
                 }
 
             }

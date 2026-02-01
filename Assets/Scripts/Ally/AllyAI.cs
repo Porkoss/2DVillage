@@ -1,4 +1,4 @@
-using Mono.Cecil.Cil;
+
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
@@ -70,9 +70,8 @@ public class AllyAI : MonoBehaviour
                 }
             }
             currentDetectionTimer += Time.deltaTime;
-            if(bHasOpponent && currentDetectionTimer >=DetectionTimer)
+            if(bHasOpponent)
             {
-                currentDetectionTimer = 0f;
                 EngagingOpponent();// check if close enough to enter combat mode here cannot go out of combat mode outside of winning combat
             }
             
@@ -105,7 +104,7 @@ public class AllyAI : MonoBehaviour
         
         if (EnemyInRange.Length > 0)
         {
-            float currentDistance = 0f;
+            float currentDistance = Utilities.Distance2D(transform.position, EnemyInRange[0].gameObject.transform.position); ;
             currentTarget = EnemyInRange[0].gameObject;
             foreach (Collider enemy in EnemyInRange)
             {
@@ -215,12 +214,17 @@ public class AllyAI : MonoBehaviour
     {
         try
         {
+            EnnemyAI ennemyAI = currentTarget.GetComponent<EnnemyAI>();
             //Debug.Log("trying to attack at distance " + (Utilities.Distance2D(chosenAttackPoint.transform.position, transform.position) <= 0.2f));
             //TO DO : keep that in check ( maybe change logic when once in place => just attack)
+            if (Utilities.Distance2D(chosenAttackPoint.transform.position, transform.position) <= 1f)
+            {
+                ennemyAI.TakingAggro(this);
+            }
             if (Utilities.Distance2D(chosenAttackPoint.transform.position, transform.position) <= 0.2f)
             {
 
-                EnnemyAI ennemyAI = currentTarget.GetComponent<EnnemyAI>();
+                
 
 
                 Debug.Log("Attacking Opponent");
