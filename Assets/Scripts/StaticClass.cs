@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class StaticClass: MonoBehaviour
@@ -11,7 +13,11 @@ public class StaticClass: MonoBehaviour
 
     public UiHandler uiHandler;
 
-    
+    public List<GameObject> listOfBuiltBuilding;
+
+    public GameObject GameOverMenu;
+
+    public GameHandler GameHandler;
 
     private void Awake()
     {

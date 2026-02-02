@@ -3,7 +3,9 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine.UI;
-
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
+using UnityEngine.Rendering.Universal;
+[RequireComponent(typeof(Health))]
 public class Building : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -16,6 +18,8 @@ public class Building : MonoBehaviour
     private Scaffolding scaffolding;
     public bool bBuilt = false;
 
+    public GameObject leftAttackPoint;
+    public GameObject rightAttackPoint;
   
     [Header("Ressources")]
 
@@ -30,7 +34,19 @@ public class Building : MonoBehaviour
     private Animator playerAnimator;
 
     private Inventory inventory;
+    [HideInInspector]
+    public Health health;
 
+    [Header("Army")]
+    [SerializeField] private GameObject soldierPrefab;
+    private List<GameObject> towerArmy = new List<GameObject>();
+    private int ArmyScale;
+    [SerializeField] private List<GameObject> spawnPoints;
+
+
+    [Header("Destruction")]
+    [SerializeField] private List<GameObject> fireVFX;
+    public int destructionStep = 2; //3 step in destruction 2 => 0
     void Start()
     {
         scaffolding = scaffoldingPrefab.GetComponent<Scaffolding>();
@@ -41,15 +57,6 @@ public class Building : MonoBehaviour
         }
 
         spriteRenderer = GetComponent<SpriteRenderer>();
-        if (!bBuilt)
-        {
-            Color color = spriteRenderer.color;
-            color.a = startAlpha;
-            color.r =  startIntensity;
-            color.g =  startIntensity;
-            color.b =  startIntensity;
-            spriteRenderer.color = color;
-        }
 
         canvas = new List<GameObject>
         {
@@ -57,15 +64,39 @@ public class Building : MonoBehaviour
             woodCanva,
             stoneCanva
         };
-
-        //Make the Start value match in UI
         foreach (GameObject go in canvas)
         {
             UpdateCanva(go);
         }
+        if (!bBuilt)
+        {
+            AlphaStartState();
+        }
+        else
+        {
+            EndBuild();
+            foreach (GameObject go in canvas)
+            {
+                go.SetActive(false);
+            }
+        }
+        //Make the Start value match in UI
 
+        health =GetComponent<Health>();
+        
     }
 
+
+
+    private void AlphaStartState()
+    {
+        Color color = spriteRenderer.color;
+        color.a = startAlpha;
+        color.r = startIntensity;
+        color.g = startIntensity;
+        color.b = startIntensity;
+        spriteRenderer.color = color;
+    }
     private void BuildIterative()
     { 
         //This part is hard coded with value 0.6 and 0.8 as the start for startAlpha and startIntensity because it won't ever change lol ( TO DO: update if needed)
@@ -77,6 +108,14 @@ public class Building : MonoBehaviour
         color.g = color.g + 0.10f;
         color.b = color.b + 0.10f;
         spriteRenderer.color = color;
+        if (scaffolding.bConstructionEnded)
+        {
+            EndBuild();
+        }
+        else
+        {
+            SoundManager.PlayRandomSoundFromType(SoundType.BuildStep, 1f);
+        }
 
     }
     private void EndBuild()
@@ -89,6 +128,9 @@ public class Building : MonoBehaviour
         color.g = 1f;
         color.b = 1f;
         spriteRenderer.color = color;
+        SoundManager.PlayRandomSoundFromType(SoundType.BuildOver, 1f);
+        StaticClass.Instance.listOfBuiltBuilding.Add(gameObject);
+        GenerateArmy();
     }
 
 
@@ -97,6 +139,11 @@ public class Building : MonoBehaviour
         //GL rereading that
         // going trought inventory to find resources that can be substracted from the building needs and removing it + handling UI then making a check if the building is over 
         // TO DO animate evolution bricks by brick
+        if (TryToHeal())
+        {
+            return true;
+        }
+        
         for (int i = canvas.Count - 1; i >= 0; i--)
         {
 
@@ -118,15 +165,13 @@ public class Building : MonoBehaviour
                     //Play Construction step animation
                     scaffolding.StepByStep(); //scaffolding part
                     BuildIterative(); // transparcy part
-                    if (scaffolding.bConstructionEnded)
-                    {
-                        EndBuild();
-                    }
+
                     return true;
                 }
                 else
                 {
                     go.GetComponent<CanvaValue>().value--;
+                    
                     UpdateCanva(go);
                     //Play Standard construction animation
                     scaffolding.PlayVFX();
@@ -139,14 +184,21 @@ public class Building : MonoBehaviour
             }
         }
 
-        if (canvas.Count == 0)
-        {
-            EndBuild(); // fail safe
-        }
         return false;
     }
 
-    
+    public bool TryToHeal()
+    {
+        if (bBuilt)
+        {
+            return health.HealingDamage(1);
+            
+        }
+        else
+        {
+            return false;
+        }
+    }
 
 
 
@@ -182,5 +234,80 @@ public class Building : MonoBehaviour
                 
         }
     }
+
+    #region Army
+    protected  void GenerateArmy()
+    {
+        ArmyScale = spawnPoints.Count;
+        for (int i = 0; i < ArmyScale; i++)
+        {
+            towerArmy.Add(Instantiate(soldierPrefab, spawnPoints[i].transform.position, Quaternion.identity));
+        }
+    }
+
+    //call when wave is over;
+    public void RestoreArmy()
+    {
+        //TO DO MAYBE do this better 
+        
+        foreach (GameObject army in towerArmy)
+        {
+            if(army != null)
+            {
+                Destroy(army);
+            }
+            
+        }
+        GenerateArmy();
+    }
+    #endregion Army
+
+
     
+
+    #region Destruction
+
+    //called by the health function ?
+    public void StepByStepFireDestruction()
+    {
+        Debug.Log("Destruction step "+ destructionStep);
+        fireVFX[destructionStep].SetActive(true);
+        destructionStep--;
+    
+    }
+    //allow player to extinguish fire, need to call for a healing method too on the building health class
+    public void StepByStepFireReconstruction()
+    {
+        if(destructionStep < fireVFX.Count)
+        {
+            destructionStep++;
+            fireVFX[destructionStep].SetActive(false);
+        }
+        if(destructionStep == 2)
+        {
+            ResetToRebuild();
+        }
+    }
+
+
+    public void ResetToRebuild()
+    {
+        scaffolding.ResetToStart();
+        AlphaStartState();
+        foreach (GameObject canva in canvas)
+        {
+            canva.SetActive(true);
+            canva.GetComponent<CanvaValue>().Reset();
+        }
+        foreach (GameObject fire in fireVFX)
+        {
+            fire.SetActive(false);
+        }
+        destructionStep = 2;
+        health.Reset();
+        bBuilt = false;
+    }
+
+
+    #endregion Destruction
 }

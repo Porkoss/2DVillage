@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4619604246036395958}
   - component: {fileID: 8338871889435004200}
   - component: {fileID: 5988678564925286950}
+  - component: {fileID: 270078747785749909}
   m_Layer: 0
   m_Name: Gold Stone 5_0
   m_TagString: Collectable
@@ -201,6 +202,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!208 &270078747785749909
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8438398519816016445}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1001 &6019815107849109732
 PrefabInstance:
   m_ObjectHideFlags: 0
