@@ -8,6 +8,9 @@ TagManager:
   - Collectable
   - Loot
   - Building
+  - Ally
+  - Enemy
+  - Spawner
   layers:
   - Default
   - TransparentFX
@@ -15,8 +18,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Ally
+  - Enemy
   - 
   - 
   - 

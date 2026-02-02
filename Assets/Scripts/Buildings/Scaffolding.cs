@@ -77,4 +77,16 @@ public class Scaffolding : MonoBehaviour
             StepByStep();
         }
     }
+
+    public void ResetToStart()
+    {
+        UpStructure.SetActive(true);
+        Hammer.SetActive(true);
+        bUpStructure = true;
+        Ladder.SetActive(true);
+        bLadder = true;
+        DownStructure.SetActive(true);
+        bDownStructure = true;
+        bConstructionEnded = false;
+    }
 }

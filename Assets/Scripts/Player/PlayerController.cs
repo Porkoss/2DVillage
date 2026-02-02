@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
 public class PlayerController : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -27,12 +28,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject ErrorPrefab;
     private float currentTimerError=0f;
     private bool bErrorShowing = false;
-   
+
+    [Header("Victim")]
+    [SerializeField] GameObject leftAttackPoint;
+    [SerializeField] GameObject righAttackPoint;
+    Health health;
+    
     void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        
+        health = GetComponent<Health>();
     }
 
     // Update is called once per frame
@@ -120,6 +126,7 @@ public class PlayerController : MonoBehaviour
 
     private void TriesToBuild()
     {
+        
         Vector2 position2D = new Vector2(transform.position.x, transform.position.y);
         Vector2 right = new Vector2(transform.right.x, transform.right.y);
         RaycastHit2D[] hits = Physics2D.CircleCastAll(position2D + right * 0.2f, 0.3f, right, 0.5f);
@@ -172,6 +179,7 @@ public class PlayerController : MonoBehaviour
         {
             Loot loot = go.GetComponent<Loot>();
             loot.Collected();
+            SoundManager.PlayRandomSoundFromType(SoundType.Gather, 0.4f);
         }
     }
 
