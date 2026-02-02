@@ -235,6 +235,7 @@ public class AllyAI : MonoBehaviour
                     animator.SetTrigger("Attack1");
                     currentAttackTimer = 0f;
                     bool bTargetDestroyed = ennemyAI.health.TakingDamage(damage);
+                    
                     ennemyAI.TakingAggro(this);
                     if (bTargetDestroyed)
                     {

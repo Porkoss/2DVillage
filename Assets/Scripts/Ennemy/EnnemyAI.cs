@@ -124,6 +124,7 @@ public class EnnemyAI : MonoBehaviour
         if (currentAttackTimer >= AttackTimer)
         {
             animator.SetTrigger("Attack1");
+
             //TO DO : move this into an animation controller to make it more realistic
             Vector2 position2D = new Vector2(transform.position.x, transform.position.y);
             Vector2 right = new Vector2(transform.right.x, transform.right.y);
@@ -170,6 +171,7 @@ public class EnnemyAI : MonoBehaviour
                 animator.SetTrigger("Attack2");
                 currentAttackTimer = 0f;
                 bool bTargetDestroyed = building.health.TakingDamage(damage);
+                
                 if (bTargetDestroyed)
                 {
                     bDestroyingBuilding = false;
@@ -229,6 +231,7 @@ public class EnnemyAI : MonoBehaviour
                 animator.SetTrigger("Attack1");
                 currentAttackTimer = 0f;
                 bool bTargetDestroyed = allyAI.health.TakingDamage(damage);
+                
                 if (bTargetDestroyed)
                 {
                     bIsInCombat = false;

@@ -35942,6 +35942,13 @@ MonoBehaviour:
   - name: BuildStep
     audioClip:
     - {fileID: 8300000, guid: df729d213c4be44a9b55cd109f5cd4f9, type: 3}
+  - name: Attack
+    audioClip:
+    - {fileID: 8300000, guid: fe0b1f9aeb45b41b089175aeeabd5d95, type: 3}
+    - {fileID: 8300000, guid: d46323e22e74e46baa241cbf48c85671, type: 3}
+  - name: Die
+    audioClip:
+    - {fileID: 8300000, guid: cabfae866cab347928b74b7d0ca6bfa9, type: 3}
 --- !u!4 &1968506470 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1605227878260281759, guid: 5572d75a6a9d705429b1fee85e4d1307, type: 3}

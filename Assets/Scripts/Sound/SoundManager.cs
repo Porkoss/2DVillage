@@ -67,5 +67,7 @@ public enum SoundType
     Build,
     Walk,
     BuildOver,
-    BuildStep
+    BuildStep,
+    Attack,
+    Die
 }

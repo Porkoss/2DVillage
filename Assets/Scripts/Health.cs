@@ -11,7 +11,8 @@ public class Health: MonoBehaviour
     public virtual void Death()
 	{
 		Debug.Log(gameObject.name + " is dead"); //TO DO : update this code if necessary
-		Destroy(gameObject);
+        SoundManager.PlayRandomSoundFromType(SoundType.Die, 0.4f);
+        Destroy(gameObject);
 		//TO DO : add death sound / animation
 	}
 	public virtual bool TakingDamage(float damage)
