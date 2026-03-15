@@ -221,10 +221,16 @@ public class EnnemyAI : MonoBehaviour
 
     private void AttackingAlly()
     {
-        try
+        if(currentTarget == null)
         {
-            AllyAI allyAI = currentTarget.GetComponent<AllyAI>();
-
+            bIsInCombat = false;
+        }
+        AllyAI allyAI = currentTarget.GetComponent<AllyAI>();
+        if (allyAI == null){
+            bIsInCombat = false;
+        }
+        else
+        {
             if (currentAttackTimer >= AttackTimer)
             {
 
@@ -245,10 +251,6 @@ public class EnnemyAI : MonoBehaviour
                 currentAttackTimer += Time.deltaTime;
             }
             
-        }
-        catch
-        {
-            bIsInCombat = false;
         }
 
     }

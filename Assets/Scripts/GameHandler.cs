@@ -1,4 +1,4 @@
-using NUnit.Framework;
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -40,13 +40,14 @@ public class GameHandler : MonoBehaviour
         {
             ennemySpawners[i].spawnNumber = waveCounter;
             ennemySpawners[i].SpawnEnnemy();
-            foreach (var building in StaticClass.Instance.listOfBuiltBuilding)
-            {
-                building.GetComponent<Building>().RestoreArmy();
-            }
+
             
         }
-        
+        foreach (var building in StaticClass.Instance.listOfBuiltBuilding)
+        {
+            building.GetComponent<Building>().RestoreArmy();
+        }
+
     }
 
     public float  GetTimer()

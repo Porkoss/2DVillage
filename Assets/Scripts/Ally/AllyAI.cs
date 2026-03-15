@@ -156,7 +156,7 @@ public class AllyAI : MonoBehaviour
             if (CheckIfReachable(rightAttackPoint))
             {
                 agent.stoppingDistance = 0;
-                Vector3 destination = new Vector3(rightAttackPoint.transform.position.x, leftAttackPoint.transform.position.y, transform.position.z);
+                Vector3 destination = new Vector3(rightAttackPoint.transform.position.x, rightAttackPoint.transform.position.y, transform.position.z);
                 agent.SetDestination(destination);
                 animator.transform.localScale = new Vector3(-1, 1, 1);
                 chosenAttackPoint = rightAttackPoint;
@@ -181,7 +181,7 @@ public class AllyAI : MonoBehaviour
             else
             {
                 agent.stoppingDistance = 0;
-                Vector3 destination = new Vector3(rightAttackPoint.transform.position.x, leftAttackPoint.transform.position.y, transform.position.z);
+                Vector3 destination = new Vector3(rightAttackPoint.transform.position.x, rightAttackPoint.transform.position.y, transform.position.z);
                 agent.SetDestination(destination);
                 animator.transform.localScale = new Vector3(-1, 1, 1);
                 chosenAttackPoint = rightAttackPoint;
@@ -201,7 +201,7 @@ public class AllyAI : MonoBehaviour
         foreach (Collider hit in hits)
         {
             //Debug.Log(hit.gameObject.transform.parent.gameObject.name);
-            if (hit.gameObject.CompareTag("Building"));
+            if (hit.gameObject.CompareTag("Building"))
             {
                 
                 return false;
@@ -212,9 +212,21 @@ public class AllyAI : MonoBehaviour
 
     private void Attacking()
     {
-        try
+        if(currentTarget = null)
         {
-            EnnemyAI ennemyAI = currentTarget.GetComponent<EnnemyAI>();
+            bIsInCombat = false;
+            bHasOpponent = false;
+            agent.isStopped = false;
+        }
+        EnnemyAI ennemyAI = currentTarget.GetComponent<EnnemyAI>();
+        if(ennemyAI = null)
+        {
+            bIsInCombat = false;
+            bHasOpponent = false;
+            agent.isStopped = false;
+        }
+        else 
+        {
             //Debug.Log("trying to attack at distance " + (Utilities.Distance2D(chosenAttackPoint.transform.position, transform.position) <= 0.2f));
             //TO DO : keep that in check ( maybe change logic when once in place => just attack)
             if (Utilities.Distance2D(chosenAttackPoint.transform.position, transform.position) <= 1f)
@@ -261,12 +273,6 @@ public class AllyAI : MonoBehaviour
             }
 
             
-        }
-        catch
-        {
-            bIsInCombat = false;
-            bHasOpponent = false;
-            agent.isStopped=false;
         }
 
     }
