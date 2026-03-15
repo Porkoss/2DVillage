@@ -4,35 +4,35 @@ using UnityEngine.AI;
 public class CombatAI : MonoBehaviour
 {
     //bool
-    private bool bIsInCombat = false;
-    private bool bHasTarget = false;
+    protected bool bIsInCombat = false;
+    protected bool bHasTarget = false;
 
     //Timer
-    private float currentAttackTimer=0f;
-    private float attackTimer=1f; 
+    protected float currentAttackTimer=0f;
+    protected float attackTimer=1f; 
     float currentDetectionTimer = 0.3f;
     float DetectionTimer = 0.3f;
 
     //target
-    private GameObject currentTarget;
-    private GameObject chosenAttackPoint;
+    protected GameObject currentTarget;
+    protected GameObject chosenAttackPoint;
 
     //Component
-    NavMeshAgent agent;
-    Animator animator;
+    protected NavMeshAgent agent;
+    protected Animator animator;
     public Health health;
 
 
 
     [Header("Combat")]
-    [SerializeField] float AttackRange = 1.2f;
+    [SerializeField] protected float AttackRange = 1.2f;
     [SerializeField] public GameObject leftAttackPoint;
     [SerializeField] public GameObject rightAttackPoint;
-    [SerializeField] float damage = 1f;
-    [SerializeField] float DetectionRange = 10f;
+    [SerializeField] protected float damage = 1f;
+    [SerializeField] protected float DetectionRange = 10f;
 
 
-    private void Start()
+    public virtual void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
@@ -71,7 +71,7 @@ public class CombatAI : MonoBehaviour
     {
         AttacksCharacter();
     }
-     void AttacksCharacter()
+     protected void AttacksCharacter()
     {
         if (currentTarget == null)
         {
@@ -200,7 +200,7 @@ public class CombatAI : MonoBehaviour
         }
     }
 
-    private bool CheckIfReachable(GameObject attackPoint)
+    protected bool CheckIfReachable(GameObject attackPoint)
     {
         int mask = LayerMask.GetMask("Default");
         Vector3 attackPointProjected = new Vector3(attackPoint.transform.position.x, attackPoint.transform.position.y, 0);
