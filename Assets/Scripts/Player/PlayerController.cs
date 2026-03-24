@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviour
                     currentTimerError = 0;
                     ErrorPrefab.SetActive(true);
                     bErrorShowing = true;
-                    //TO DO : play sound
+
                 }
                 
             }

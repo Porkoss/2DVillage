@@ -7,13 +7,12 @@ public class Health: MonoBehaviour
 
 	[SerializeField] protected float regenTimer = 10f;
 	 protected float runningRegenTimer = 0f;
-	//TO DO : herites this class in order to adapt to entities ?
+
     public virtual void Death()
 	{
-		Debug.Log(gameObject.name + " is dead"); //TO DO : update this code if necessary
+		Debug.Log(gameObject.name + " is dead"); 
         SoundManager.PlayRandomSoundFromType(SoundType.Die, 0.4f);
         Destroy(gameObject);
-		//TO DO : add death sound / animation
 	}
 	public virtual bool TakingDamage(float damage)
 	{
@@ -37,10 +36,19 @@ public class Health: MonoBehaviour
 		else
 		{
 			currentHealth += damageHealed;
+			if(currentHealth > maxHealth)
+			{
+				currentHealth = maxHealth;	
+			}
 			return true;
 		}
 	}
 
+
+	public void FullHeal()
+	{
+		currentHealth = maxHealth;
+	}
 	public virtual void Reset()
 	{
 		currentHealth = maxHealth;
@@ -50,7 +58,7 @@ public class Health: MonoBehaviour
 	{
 		return currentHealth/maxHealth;
 	}
-	//TO DO: don't forget to remove this from other place in the game 
+
 	public void passiveRegen()
     {
         if (runningRegenTimer > regenTimer)
@@ -62,8 +70,20 @@ public class Health: MonoBehaviour
 
     }
 
+	public float GetHealth()
+	{
+		return currentHealth;
+	}
+
+	public bool IsAlive()
+	{
+		return currentHealth > 0;
+	}
     public void Update()
     {
 		passiveRegen();
     }
+
+
+	
 }

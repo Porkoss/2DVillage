@@ -12,7 +12,7 @@ public class StartMenu : MonoBehaviour
     {
         Debug.Log("Starting Game");
         Time.timeScale = 1.0f;
-        SceneManager.LoadScene("TestScene");//TO DO UPDATE THIS
+        SceneManager.LoadScene("TestScene");////TODO UPDATE THIS
         
     }
 }

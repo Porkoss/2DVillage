@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3646976392706332726}
   - component: {fileID: 5521554641372797192}
   - component: {fileID: 5289902621967556059}
+  - component: {fileID: 7323586898404915969}
   m_Layer: 0
   m_Name: Warrior_Attack1_0
   m_TagString: Untagged
@@ -114,6 +115,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7323586898404915969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041651032640642416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c7e85e13cc10f44892216c621e312e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnnemyAnimationHandler
 --- !u!1 &2208235771337774974
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,16 +323,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd2a24a24c9c97a418d6f08e7228a85a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnnemyAI
-  stoppingDistance: 0.1
-  attackRange: 1.5
-  bDestroyingBuilding: 0
-  damage: 1
-  AttackTimer: 1
+  state: 0
+  health: {fileID: 0}
+  AttackRange: 1.5
   leftAttackPoint: {fileID: 4659334353953799753}
   rightAttackPoint: {fileID: 9107716542233346511}
-  health: {fileID: 0}
-  bIsInCombat: 0
-  bIsAvalaibleForCombat: 1
+  damage: 1
+  DetectionRange: 10
 --- !u!114 &2090493218481976860
 MonoBehaviour:
   m_ObjectHideFlags: 0

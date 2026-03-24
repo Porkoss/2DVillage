@@ -99,7 +99,7 @@ public class Building : MonoBehaviour
     }
     private void BuildIterative()
     { 
-        //This part is hard coded with value 0.6 and 0.8 as the start for startAlpha and startIntensity because it won't ever change lol ( TO DO: update if needed)
+        //This part is hard coded with value 0.6 and 0.8 as the start for startAlpha and startIntensity because it won't ever change lol ( //TODO: update if needed)
 
 
         Color color = spriteRenderer.color;
@@ -138,7 +138,7 @@ public class Building : MonoBehaviour
     {
         //GL rereading that
         // going trought inventory to find resources that can be substracted from the building needs and removing it + handling UI then making a check if the building is over 
-        // TO DO animate evolution bricks by brick
+       
         if (TryToHeal())
         {
             return true;
@@ -248,17 +248,16 @@ public class Building : MonoBehaviour
     //call when wave is over;
     public void RestoreArmy()
     {
-        //TO DO MAYBE do this better 
-        
-        foreach (GameObject army in towerArmy)
+        for (int i =0; i < ArmyScale; ++i) 
+
         {
-            if(army != null)
+            GameObject army = towerArmy[i];
+            if(army == null)
             {
-                Destroy(army);
+                army = Instantiate(soldierPrefab, spawnPoints[i].transform.position, Quaternion.identity);
             }
             
         }
-        GenerateArmy();
     }
     #endregion Army
 

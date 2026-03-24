@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -16,41 +17,36 @@ public class EnnemyAI : CombatAI
         base.Start();
         listOfBuiltBuilding = StaticClass.Instance.listOfBuiltBuilding;
     }
+
     void AttackBuilding()
     {
         Building building = currentTarget.GetComponentInParent<Building>();
 
-
-
-
         if (Utilities.Distance2D(currentTarget.transform.position, transform.position) <= 0.1f)
         {
-
             if (currentAttackTimer >= attackTimer)
             {
-
                 animator.SetTrigger("Attack2");
                 currentAttackTimer = 0f;
-                bool bTargetDestroyed = building.health.TakingDamage(damage);
-
-                if (bTargetDestroyed)
+                if (building.health.TakingDamage(damage))
                 {
-                    bIsInCombat = false;
-                    bHasTarget = false;
+                    state = AIState.SeekingTarget;
                 }
-                //TO DO : "Add lancer flamme aniamtion"
             }
-            else
-            {
-                currentAttackTimer += Time.deltaTime;
-            }
+            else currentAttackTimer += Time.deltaTime;
         }
-
+        else
+        {
+            Vector3 destination = new Vector3(currentTarget.transform.position.x, currentTarget.transform.position.y, transform.position.z);
+            agent.SetDestination(destination);
+        }
     }
 
+
+    
     protected override void Attacks()
     {
-        if (currentTarget.CompareTag("Player")) // || currentTarget.CompareTag("Ally")  TO DO : update for ally
+        if (currentTarget.CompareTag("Ally")) 
         {
             AttacksCharacter();
         }
@@ -58,14 +54,36 @@ public class EnnemyAI : CombatAI
         {
             AttackBuilding();
         }
+        else if (currentTarget.CompareTag("Player"))
+        {
+            AttackPlayer();
+        }
+    }
+
+    void AttackPlayer()
+    {
+        if (currentAttackTimer >= attackTimer)
+        {
+            animator.SetTrigger("Attack1");
+            currentAttackTimer = 0f;
+            ////TODO : move this into an animation controller to make it more realistic
+
+        }
+        else
+        {
+
+            currentAttackTimer += Time.deltaTime;
+        }
+
+
     }
 
     protected override void FindTarget()
     {
 
-        LayerMask enemyLayer = LayerMask.GetMask("Enemy");
+        LayerMask enemyLayer = LayerMask.GetMask("Ally");
         Collider[] EnemyInRange = Physics.OverlapSphere(transform.position, DetectionRange, enemyLayer);
-
+        currentTarget = StaticClass.Instance.player;
         if (EnemyInRange.Length > 0)
         {
             float currentDistance = Utilities.Distance2D(transform.position, EnemyInRange[0].gameObject.transform.position); ;
@@ -80,7 +98,7 @@ public class EnnemyAI : CombatAI
 
                     currentDistance = iterDistance;
                     currentTarget = enemy.gameObject;
-                    bHasTarget = true;
+                    state = AIState.JoiningTarget;
                 }
             }
         }
@@ -91,13 +109,18 @@ public class EnnemyAI : CombatAI
         if(targetDistance >= buildingDistance)
         {
             currentTarget = closestBuilding;
-            bHasTarget = true;
+            state = AIState.JoiningTarget;  
         }
 
-        if (!bHasTarget) 
+        if (state != AIState.JoiningTarget) 
         {
-            bHasTarget = true;
+            state = AIState.JoiningTarget;
             currentTarget = StaticClass.Instance.player;
+        }
+
+        if(state == AIState.JoiningTarget)
+        {
+            agent.SetDestination(currentTarget.transform.position);
         }
 
         
@@ -125,5 +148,21 @@ public class EnnemyAI : CombatAI
             return StaticClass.Instance.player;
         }
         return currentClosest;
+    }
+
+    protected override void SetUpForAttacks()
+    {
+        if (currentTarget.CompareTag("Player"))
+        {
+            agent.SetDestination(currentTarget.transform.position);
+            if(Utilities.Distance2D(currentTarget.transform.position, transform.position) <= 0.5f)
+            {
+                AttackPlayer();
+            }
+        }
+        else
+        {
+            base.SetUpForAttacks();
+        }
     }
 }

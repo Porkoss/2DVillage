@@ -11287,7 +11287,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3670363406331623837, guid: 85a1e3a0bfd043a46b58d064b08e81bf, type: 3}
       propertyPath: bBuilt
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8761205741492596901, guid: 85a1e3a0bfd043a46b58d064b08e81bf, type: 3}
       propertyPath: m_Name
@@ -28928,8 +28928,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba0f530d48226a248867660eb7fa18af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameHandler
-  currentTimer: 60
-  waveCoolDown: 60
+  currentTimer: 500
+  waveCoolDown: 500
 --- !u!1001 &1538572809
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35947,6 +35947,9 @@ MonoBehaviour:
     - {fileID: 8300000, guid: fe0b1f9aeb45b41b089175aeeabd5d95, type: 3}
     - {fileID: 8300000, guid: d46323e22e74e46baa241cbf48c85671, type: 3}
   - name: Die
+    audioClip:
+    - {fileID: 8300000, guid: cabfae866cab347928b74b7d0ca6bfa9, type: 3}
+  - name: Falling
     audioClip:
     - {fileID: 8300000, guid: cabfae866cab347928b74b7d0ca6bfa9, type: 3}
 --- !u!4 &1968506470 stripped

@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4891087136477354587}
   - component: {fileID: 2770158908471669785}
   - component: {fileID: 1047742658871954503}
+  - component: {fileID: 7626362129305711867}
   m_Layer: 0
   m_Name: Tree
   m_TagString: Collectable
@@ -196,10 +197,9 @@ MonoBehaviour:
   droppableObjects:
   - {fileID: 8978814169345079615, guid: d85592274c1acfd49827ab76f74b0cf0, type: 3}
   droppableQuantities: 05000000
-  Health: 2
-  MaxHealth: 2
-  RegenTimer: 3
+  health: {fileID: 0}
   SecondLifeTimer: 20
+  runningSecondLifeTimer: 0
 --- !u!208 &1047742658871954503
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -216,3 +216,18 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 0
   m_Center: {x: 0, y: 0.3, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &7626362129305711867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7627665348015528956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08a44a0a92ffef442a321756abea39e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealthCollectable
+  currentHealth: 5
+  maxHealth: 5
+  regenTimer: 10

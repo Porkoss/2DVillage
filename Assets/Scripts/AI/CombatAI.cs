@@ -4,14 +4,16 @@ using UnityEngine.AI;
 public class CombatAI : MonoBehaviour
 {
     //bool
-    protected bool bIsInCombat = false;
-    protected bool bHasTarget = false;
+    public AIState state = AIState.SeekingTarget;
 
     //Timer
     protected float currentAttackTimer=0f;
     protected float attackTimer=1f; 
-    float currentDetectionTimer = 0.3f;
-    float DetectionTimer = 0.3f;
+    protected float currentDetectionTimer = 0.3f;
+    protected float DetectionTimer = 0.3f;
+
+    protected float resetTimer = 2f;
+    protected float currentResetTimer = 0f;
 
     //target
     protected GameObject currentTarget;
@@ -21,16 +23,24 @@ public class CombatAI : MonoBehaviour
     protected NavMeshAgent agent;
     protected Animator animator;
     public Health health;
-
+   
 
 
     [Header("Combat")]
-    [SerializeField] protected float AttackRange = 1.2f;
+    [SerializeField] protected float AttackRange = 1.5f;
     [SerializeField] public GameObject leftAttackPoint;
     [SerializeField] public GameObject rightAttackPoint;
-    [SerializeField] protected float damage = 1f;
+    [SerializeField] public float damage = 1f;
     [SerializeField] protected float DetectionRange = 10f;
 
+
+    public enum AIState
+    {
+        SeekingTarget,
+        JoiningTarget,
+        InCombat,
+        AttackingBuilding
+    }
 
     public virtual void Start()
     {
@@ -40,30 +50,54 @@ public class CombatAI : MonoBehaviour
         //defaultPosition = Utilities.To2DVector(transform.position);
         currentTarget = gameObject;
     }
-    void Update()
+    public virtual void Update()
     {
-        if (bIsInCombat)
+        transform.forward = Vector3.down;
+        switch (state)
         {
-            Attacks();
-        }
-        else if (bHasTarget)
-        {
-            SetUpForAttacks();
-        }
-        else if(currentDetectionTimer>DetectionTimer)
-        {
-            FindTarget();
-            currentDetectionTimer = 0f;
+            case AIState.SeekingTarget:
+                if (currentDetectionTimer > DetectionTimer)
+                {
+                    FindTarget();
+                    currentDetectionTimer = 0f;
+                }
+                currentDetectionTimer += Time.deltaTime;
+                break;
+
+            case AIState.JoiningTarget:
+                if(Utilities.Distance2D(transform.position, currentTarget.transform.position) < 5f)//check for shortest path to attack point only when relatively close
+                {
+                    SetUpForAttacks();
+                }
+                break;
+
+            case AIState.InCombat:
+                Attacks();
+                break;
         }
 
-        currentDetectionTimer += Time.deltaTime;
+        if (currentResetTimer > resetTimer)
+        {
+            currentResetTimer = 0f;
+            state = AIState.SeekingTarget;
+        }
+        currentResetTimer += Time.deltaTime;
+
+        if (currentTarget != null)
+        {
+            Vector3 vector = currentTarget.transform.position - transform.position;
+
+            animator.transform.localScale = new Vector3(Mathf.Sign(vector.x), 1, 1);
+        }
     }
     public void TakingAggro(CombatAI attacker)
     {
-        
-        bIsInCombat = true;
-        currentTarget = attacker.gameObject;
-        agent.isStopped = true;
+        if(state!= AIState.InCombat)
+        {
+            currentTarget = attacker.gameObject;
+            SetUpForAttacks();
+            //agent.isStopped = true;
+        }
 
     }
 
@@ -75,32 +109,29 @@ public class CombatAI : MonoBehaviour
     {
         if (currentTarget == null)
         {
-            bIsInCombat = false;
-            bHasTarget = false;
+            state = AIState.SeekingTarget;
             agent.isStopped = false;
+            return;
         }
         CombatAI ennemyAI = currentTarget.GetComponent<CombatAI>();
         if (ennemyAI == null)
         {
-            bIsInCombat = false;
-            bHasTarget = false;
+            state = AIState.SeekingTarget;
             agent.isStopped = false;
+            return;
         }
         else
         {
             //Debug.Log("trying to attack at distance " + (Utilities.Distance2D(chosenAttackPoint.transform.position, transform.position) <= 0.2f));
-            //TO DO : keep that in check ( maybe change logic when once in place => just attack)
-            if (Utilities.Distance2D(chosenAttackPoint.transform.position, transform.position) <= 1f)
+            float distance = Utilities.Distance2D(chosenAttackPoint.transform.position, transform.position);
+            //Debug.Log(distance);
+            if (distance <= 1f)
             {
                ennemyAI.TakingAggro(this);
             }
-            if (Utilities.Distance2D(chosenAttackPoint.transform.position, transform.position) <= 0.2f)
+            if (distance <= 0.5f)
             {
-
-
-
-
-                Debug.Log("Attacking Opponent");
+               
                 agent.isStopped = true;
                 if (currentAttackTimer >= attackTimer)
                 {
@@ -112,8 +143,7 @@ public class CombatAI : MonoBehaviour
                     ennemyAI.TakingAggro(this);
                     if (bTargetDestroyed)
                     {
-                        bIsInCombat = false;
-                        bHasTarget = false;
+                        state = AIState.SeekingTarget;
                         agent.isStopped = false;
                     }
 
@@ -137,8 +167,9 @@ public class CombatAI : MonoBehaviour
         }
     }
 
-    void SetUpForAttacks()
+    protected virtual void SetUpForAttacks()
     {
+        agent.isStopped = false;
         GameObject leftAttackPoint = currentTarget.GetComponent<CombatAI>().leftAttackPoint;
 
         GameObject rightAttackPoint = currentTarget.GetComponent<CombatAI>().rightAttackPoint;
@@ -170,12 +201,17 @@ public class CombatAI : MonoBehaviour
                 chosenAttackPoint = rightAttackPoint;
             }
         }
+        if(chosenAttackPoint == null)
+        {
+            chosenAttackPoint = currentTarget;
+        }
 
-
-        if (Utilities.Distance2D(transform.position, currentTarget.transform.position) <= AttackRange && !bIsInCombat)
+        if ((Utilities.Distance2D(transform.position, currentTarget.transform.position) <= AttackRange && state != AIState.InCombat ) || 
+            (Utilities.Distance2D(transform.position, chosenAttackPoint.transform.position) <= AttackRange && state != AIState.InCombat))
         {
             Debug.Log("EngagingOponent)");
-            bIsInCombat = true;
+
+            state = AIState.InCombat;
             if (Utilities.Distance2D(transform.position, leftAttackPoint.transform.position) <= Utilities.Distance2D(transform.position, rightAttackPoint.transform.position))
             {
                 agent.stoppingDistance = 0;
@@ -236,13 +272,18 @@ public class CombatAI : MonoBehaviour
 
                     currentDistance = iterDistance;
                     currentTarget = enemy.gameObject;
-                    bHasTarget = true;
+                    state=AIState.JoiningTarget;
                 }
             }
         }
         else
         {
-            bHasTarget = false;
+            state =AIState.SeekingTarget;
+        }
+
+        if(state == AIState.JoiningTarget)
+        {
+            agent.SetDestination(currentTarget.transform.position);
         }
     }
 }

@@ -11,16 +11,13 @@ public class Collectable : MonoBehaviour
     [SerializeField] List<GameObject> droppableObjects;
     [SerializeField] List<int> droppableQuantities;
 
-    [Header("Health")]
-    public float Health = 2f;
-    public float MaxHealth = 2f;
-    public float RegenTimer = 3f;
-    protected float runningRegenTimer = 0f;
-    //TO DO : rework code with health component
+
 
     protected PlayerController controller;
     protected Animator playerAnimator;
     protected Animator collectableAnimator;
+
+    public Health health;
 
     private void Start()
     {
@@ -29,23 +26,14 @@ public class Collectable : MonoBehaviour
             controller = StaticClass.Instance.player.GetComponent<PlayerController>();
             playerAnimator = StaticClass.Instance.player.GetComponent<Animator>();
         }
-
+        health = GetComponent<Health>();
         collectableAnimator = GetComponent<Animator>();
         SetUp();
     }
 
     protected virtual void Update()
     {
-        if(runningRegenTimer > RegenTimer)
-        {
-            Health = MaxHealth;
-            runningRegenTimer = 0;
-            //maybe reset "breaking animation" not sure if the project will reach this place
-        }
-        if (Health != MaxHealth)
-        {
-            runningRegenTimer += Time.deltaTime;
-        }
+
     }
     public void Break()
     {
@@ -70,6 +58,15 @@ public class Collectable : MonoBehaviour
     }
 
 
+    public void TakeDamage(float damage)
+    {
+        health.TakingDamage(damage);
+        Debug.Log(gameObject.name + "has " + health.GetHealth());
+        PlayAnimationForPlayer();
+        PlayAnimationForCollectable();
+    }
+
+
     public void GenerateOneObject(GameObject prefab)
     {
         GameObject lootable = Instantiate(prefab, transform.position, Quaternion.identity);
@@ -83,19 +80,7 @@ public class Collectable : MonoBehaviour
     {
         Destroy(gameObject);
     }
-    public void TakeDamage(float damage)
-    {
-        if(Health <= 0)
-        {
-            return; //fail safe
-        }
-        Health-= damage;
-        runningRegenTimer = 0f;
-        Debug.Log(gameObject.name + "has " + Health);
-        PlayAnimationForPlayer();
-        PlayAnimationForCollectable();
 
-    }
 
     public virtual void PlayAnimationForPlayer()
     {
@@ -109,7 +94,7 @@ public class Collectable : MonoBehaviour
 
     public void OnHitAnimationEnded()
     {
-        if (Health <= 0)
+        if (!health.IsAlive())
         {
             Break();
         }
