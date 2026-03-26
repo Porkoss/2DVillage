@@ -5,7 +5,8 @@ public class Inventory : MonoBehaviour
     public int gold = 0;
     public int wood = 0;
     public int stone = 0;
-
+    public int villager = 0;
+    public int villagerMax = 0;
     public bool Substract(CanvaValue canvaValue)
     {
         switch (canvaValue.resourceType)
@@ -32,6 +33,16 @@ public class Inventory : MonoBehaviour
                 }
             case ResourceType.Stone:
                 if (stone >= 1)
+                {
+                    stone--;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            case ResourceType.Villager:
+                if (villager>= 1)
                 {
                     stone--;
                     return true;
