@@ -7,13 +7,15 @@ public class CombatAI : MonoBehaviour
     public AIState state = AIState.SeekingTarget;
 
     //Timer
+    [Header("Timer")]
+    [SerializeField]protected float resetTimer = 2f;
+    [SerializeField] protected float currentResetTimer = 0f;
     protected float currentAttackTimer=0f;
     protected float attackTimer=1f; 
     protected float currentDetectionTimer = 0.3f;
     protected float DetectionTimer = 0.3f;
 
-    protected float resetTimer = 2f;
-    protected float currentResetTimer = 0f;
+
 
     //target
     [SerializeField] protected GameObject currentTarget;
@@ -56,7 +58,7 @@ public class CombatAI : MonoBehaviour
         switch (state)
         {
             case AIState.SeekingTarget:
-                if (currentDetectionTimer > DetectionTimer)
+                if (currentDetectionTimer >= DetectionTimer)
                 {
                     FindTarget();
                     currentDetectionTimer = 0f;
@@ -80,6 +82,7 @@ public class CombatAI : MonoBehaviour
         {
             currentResetTimer = 0f;
             state = AIState.SeekingTarget;
+            currentDetectionTimer = DetectionTimer;
         }
         currentResetTimer += Time.deltaTime;
 
