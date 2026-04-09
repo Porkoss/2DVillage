@@ -41,9 +41,12 @@ public class TreeCollectable : Collectable
             runningSecondLifeTimer = 0;
             health.FullHeal();
             collectableAnimator.SetTrigger("NewTree");
-            bIsStump=false;
+            bIsStump = false;
         }
-
-        runningSecondLifeTimer += Time.deltaTime;
+        if (bIsStump)
+        {
+            runningSecondLifeTimer += Time.deltaTime;
+        }
+        
     }
 }

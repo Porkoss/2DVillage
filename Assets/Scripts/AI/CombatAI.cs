@@ -16,7 +16,7 @@ public class CombatAI : MonoBehaviour
     protected float currentResetTimer = 0f;
 
     //target
-    protected GameObject currentTarget;
+    [SerializeField] protected GameObject currentTarget;
     protected GameObject chosenAttackPoint;
 
     //Component
@@ -170,9 +170,21 @@ public class CombatAI : MonoBehaviour
     protected virtual void SetUpForAttacks()
     {
         agent.isStopped = false;
-        GameObject leftAttackPoint = currentTarget.GetComponent<CombatAI>().leftAttackPoint;
+        GameObject leftAttackPoint;
+        GameObject rightAttackPoint;
+        if (currentTarget.CompareTag("Building"))
+        {
+            leftAttackPoint = currentTarget.GetComponent<Building>().leftAttackPoint;
 
-        GameObject rightAttackPoint = currentTarget.GetComponent<CombatAI>().rightAttackPoint;
+            rightAttackPoint = currentTarget.GetComponent<Building>().rightAttackPoint;
+        }
+        else
+        {
+            leftAttackPoint = currentTarget.GetComponent<CombatAI>().leftAttackPoint;
+
+            rightAttackPoint = currentTarget.GetComponent<CombatAI>().rightAttackPoint;
+        }
+
         //checking first is the attack point is reachable.
         if (!CheckIfReachable(rightAttackPoint))
         {

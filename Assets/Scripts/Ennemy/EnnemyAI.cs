@@ -22,7 +22,7 @@ public class EnnemyAI : CombatAI
     {
         Building building = currentTarget.GetComponentInParent<Building>();
 
-        if (Utilities.Distance2D(currentTarget.transform.position, transform.position) <= 0.1f)
+        if (Utilities.Distance2D(chosenAttackPoint.transform.position, transform.position) <= 0.5f)
         {
             if (currentAttackTimer >= attackTimer)
             {
@@ -37,7 +37,7 @@ public class EnnemyAI : CombatAI
         }
         else
         {
-            Vector3 destination = new Vector3(currentTarget.transform.position.x, currentTarget.transform.position.y, transform.position.z);
+            Vector3 destination = new Vector3(chosenAttackPoint.transform.position.x, chosenAttackPoint.transform.position.y, transform.position.z);
             agent.SetDestination(destination);
         }
     }

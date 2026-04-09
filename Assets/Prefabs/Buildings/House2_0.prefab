@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1982543833615904675}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.82, y: 2.32, z: 37.2092}
+  m_LocalPosition: {x: -1.47, y: -0.66, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -295,8 +295,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf61e6d14ada847abf695b3df56ed6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  currentHealth: 0
-  maxHealth: 0
+  currentHealth: 10
+  maxHealth: 10
   regenTimer: 10
 --- !u!1 &7122044804015901402
 GameObject:
@@ -323,7 +323,7 @@ Transform:
   m_GameObject: {fileID: 7122044804015901402}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.18, y: 2.31, z: 37.2092}
+  m_LocalPosition: {x: 1.42, y: -0.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -298,7 +298,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 5495360418351028877}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.1
+  m_Radius: 0.2
   m_Speed: 1
   m_Acceleration: 8
   avoidancePriority: 50
@@ -324,12 +324,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnnemyAI
   state: 0
+  currentTarget: {fileID: 0}
   health: {fileID: 0}
-  AttackRange: 1.5
+  AttackRange: 5
   leftAttackPoint: {fileID: 4659334353953799753}
   rightAttackPoint: {fileID: 9107716542233346511}
   damage: 1
-  DetectionRange: 10
+  DetectionRange: 50
 --- !u!114 &2090493218481976860
 MonoBehaviour:
   m_ObjectHideFlags: 0
