@@ -4,5 +4,7 @@ public enum ResourceType
 {
     Gold,
     Wood,
-    Stone
+    Stone,
+    Villager,
+    VillagerMax
 }

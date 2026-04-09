@@ -62,7 +62,7 @@ namespace Cainos.PixelArtPlatformer_VillageProps
 
                     Push();
                 }
-                //to down
+                ////TODOwn
                 else
                 {
                     if (platformYPos > platformYPosDown)

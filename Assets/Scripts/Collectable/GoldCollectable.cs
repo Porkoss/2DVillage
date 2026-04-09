@@ -27,9 +27,10 @@ public class GoldCollectable : Collectable
 
     public override void EndGameObject()
     {
-        base.EndGameObject();
+        
         var Vfx = Instantiate(VFXPrefab, transform.position, Quaternion.identity);
         Vfx.GetComponent<VFXHandler>().bIsInstantiable = true;
+        base.EndGameObject();
     }
 
 }

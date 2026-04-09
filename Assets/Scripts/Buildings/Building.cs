@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine.Rendering.Universal;
+using System.Diagnostics.CodeAnalysis;
 [RequireComponent(typeof(Health))]
 public class Building : MonoBehaviour
 {
@@ -28,6 +29,9 @@ public class Building : MonoBehaviour
     [SerializeField] private GameObject goldCanva;
     [SerializeField] private GameObject woodCanva;
     [SerializeField] private GameObject stoneCanva;
+    [SerializeField] private GameObject VillagerCostCanva;
+    [SerializeField] private GameObject GeneratedVillagerCanva;
+    [SerializeField] private GameObject GeneratedArmyCanva;
 
     private List<GameObject> canvas;
 
@@ -43,6 +47,10 @@ public class Building : MonoBehaviour
     private int ArmyScale;
     [SerializeField] private List<GameObject> spawnPoints;
 
+    [Header("Population")]
+    [SerializeField] private int population;
+
+    
 
     [Header("Destruction")]
     [SerializeField] private List<GameObject> fireVFX;
@@ -68,6 +76,9 @@ public class Building : MonoBehaviour
         {
             UpdateCanva(go);
         }
+        UpdateCanva(VillagerCostCanva);
+        UpdateCanva(GeneratedVillagerCanva);
+        UpdateCanva(GeneratedArmyCanva);
         if (!bBuilt)
         {
             AlphaStartState();
@@ -99,7 +110,7 @@ public class Building : MonoBehaviour
     }
     private void BuildIterative()
     { 
-        //This part is hard coded with value 0.6 and 0.8 as the start for startAlpha and startIntensity because it won't ever change lol ( TO DO: update if needed)
+        //This part is hard coded with value 0.6 and 0.8 as the start for startAlpha and startIntensity because it won't ever change lol ( //TODO: update if needed)
 
 
         Color color = spriteRenderer.color;
@@ -120,6 +131,7 @@ public class Building : MonoBehaviour
     }
     private void EndBuild()
     {
+        
         scaffolding.EndConstruction();
         bBuilt = true;
         Color color = spriteRenderer.color;
@@ -131,17 +143,30 @@ public class Building : MonoBehaviour
         SoundManager.PlayRandomSoundFromType(SoundType.BuildOver, 1f);
         StaticClass.Instance.listOfBuiltBuilding.Add(gameObject);
         GenerateArmy();
+        CreateVillager();
     }
 
 
     public bool TryOneBrick()
     {
-        //GL rereading that
         // going trought inventory to find resources that can be substracted from the building needs and removing it + handling UI then making a check if the building is over 
-        // TO DO animate evolution bricks by brick
+       
         if (TryToHeal())
         {
             return true;
+        }
+        //adding enough villager check and hiding canva.
+        CanvaValue VillagerCanvaClass = VillagerCostCanva.GetComponent<CanvaValue>();
+        if (inventory.villager >= VillagerCanvaClass.value)
+        {
+            inventory.villager -= VillagerCanvaClass.value;
+            VillagerCanvaClass.value = 0;
+            VillagerCostCanva.SetActive(false);
+            
+        }
+        else
+        {
+            return false;
         }
         
         for (int i = canvas.Count - 1; i >= 0; i--)
@@ -243,27 +268,41 @@ public class Building : MonoBehaviour
         {
             towerArmy.Add(Instantiate(soldierPrefab, spawnPoints[i].transform.position, Quaternion.identity));
         }
+
     }
 
     //call when wave is over;
     public void RestoreArmy()
     {
-        //TO DO MAYBE do this better 
-        
-        foreach (GameObject army in towerArmy)
+        for (int i =0; i < ArmyScale; ++i) 
+
         {
-            if(army != null)
+            GameObject army = towerArmy[i];
+            if(army == null)
             {
-                Destroy(army);
+                army = Instantiate(soldierPrefab, spawnPoints[i].transform.position, Quaternion.identity);
             }
             
         }
-        GenerateArmy();
     }
     #endregion Army
 
+    #region Population 
+    public void CreateVillager()
+    {
+        inventory.villager += GeneratedVillagerCanva.GetComponent<CanvaValue>().maxValue;
+        inventory.villagerMax += GeneratedVillagerCanva.GetComponent<CanvaValue>().maxValue;
+        VillagerCostCanva.SetActive(false);
+        GeneratedVillagerCanva.SetActive(false);
+        GeneratedArmyCanva.SetActive(false);
+    }
+    public void RemoveVillager()
+    {
+        inventory.villager -= GeneratedVillagerCanva.GetComponent<CanvaValue>().maxValue;
+        inventory.villagerMax -= GeneratedVillagerCanva.GetComponent<CanvaValue>().maxValue;
+    }
+    #endregion 
 
-    
 
     #region Destruction
 

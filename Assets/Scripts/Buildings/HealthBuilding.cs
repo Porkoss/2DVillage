@@ -4,12 +4,19 @@ public class HealthBuilding : Health
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     int DestructionStep=2;
+    private Building building;
+
+    private void Start()
+    {
+        building = GetComponent<Building>();
+    }
     public override void Death()
     {
         Debug.Log(gameObject.name + " is dead");
-
+        //in order to avoid restore Army : 
         StaticClass.Instance.listOfBuiltBuilding.Remove(gameObject);
-        
+        //in order to avoid using village from destroyed building
+        building.RemoveVillager();
     }
 
     public override bool TakingDamage(float damage)
@@ -17,7 +24,7 @@ public class HealthBuilding : Health
         currentHealth -= damage;
         if (currentHealth<= (DestructionStep/3.0f) * maxHealth)
         {
-            gameObject.GetComponent<Building>().StepByStepFireDestruction();
+            building.StepByStepFireDestruction();
             DestructionStep--;
         }
 
@@ -40,7 +47,7 @@ public class HealthBuilding : Health
     {
         if (currentHealth > (DestructionStep / 3.0f) * maxHealth)
         {
-            gameObject.GetComponent<Building>().StepByStepFireReconstruction();
+            building.StepByStepFireReconstruction();
             DestructionStep++;
         }
         return base.HealingDamage(damageHealed);

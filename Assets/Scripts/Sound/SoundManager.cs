@@ -22,19 +22,26 @@ public class SoundManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    
+
     public static void PlayRandomSoundFromType(SoundType soundType, float intensity)
     {
-        AudioClip[] clips = instance.soundStructs[(int)soundType].audioClip;
-        int randomint = UnityEngine.Random.Range(0, clips.Length-1);
+        if (instance == null || instance.audioSource == null)
+            return;
 
-        if (!instance.audioSource.IsUnityNull())
-        {
-            instance.audioSource.PlayOneShot(clips[randomint], intensity);
-        }
-        
-        
-        
+        int index = (int)soundType;
+
+        if (instance.soundStructs == null || index >= instance.soundStructs.Length)
+            return;
+
+        var clips = instance.soundStructs[index].audioClip;
+
+        if (clips == null || clips.Length == 0)
+            return;
+
+        var clip = clips[UnityEngine.Random.Range(0, clips.Length)];
+
+        if (clip != null)
+            instance.audioSource.PlayOneShot(clip, intensity);
     }
 
 #if UNITY_EDITOR
@@ -69,5 +76,6 @@ public enum SoundType
     BuildOver,
     BuildStep,
     Attack,
-    Die
+    Die,
+    Falling
 }

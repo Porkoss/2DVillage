@@ -284,7 +284,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 8251394103117465408}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.2
   m_Speed: 1
   m_Acceleration: 8
   avoidancePriority: 50
@@ -311,6 +311,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Health
   currentHealth: 10
   maxHealth: 10
+  regenTimer: 10
 --- !u!114 &5346206330596495499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,18 +324,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1034a2e61aa8fc46825b1373d4e3831, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AllyAI
-  DetectionRange: 20
-  DetectionTimer: 0.3
+  state: 0
+  health: {fileID: 0}
   AttackRange: 1.2
   leftAttackPoint: {fileID: 1988228767631745335}
   rightAttackPoint: {fileID: 8605300231786403875}
-  AttackTimer: 1
   damage: 1
-  bIsInCombat: 0
-  currentTarget: {fileID: 0}
-  bHasOpponent: 0
-  health: {fileID: 0}
-  chosenAttackPoint: {fileID: 0}
+  DetectionRange: 75
 --- !u!1 &8605300231786403875
 GameObject:
   m_ObjectHideFlags: 0
